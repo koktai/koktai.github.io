@@ -1,33 +1,56 @@
-# \<koktai-polymer\>
+# 國臺對照活用辭典
+https://koktai.github.io/
 
-UI for Ngô&#39;s dictionary
+## Source code project
+https://github.com/a-tsioh/koktai-polymer
 
-## Install the Polymer-CLI
-
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
-
-## Viewing Your Application
-
+## How to update this websits
+- Clone source code from https://github.com/a-tsioh/koktai-polymer
 ```
-$ polymer serve
-```
-
-## Building Your Application
-
-```
-$ polymer build
+git clone https://github.com/a-tsioh/koktai-polymer
+cd koktai-polymer/
 ```
 
-This will create builds of your application in the `build/` directory, optimized to be served in production. You can then serve the built versions by giving `polymer serve` a folder to serve from:
-
+- Install packages
 ```
-$ polymer serve build/default
-```
-
-## Running Tests
-
-```
-$ polymer test
+bower install
+gulp install -g polymer-cli
 ```
 
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
+- Build
+```
+polymer build
+```
+
+- Test in local ( http://localhost:8888 )
+```
+polymer serve build/default --port 8888
+```
+- if everythings fine, update to github pages
+```
+cd ..
+git clone git@github.com:koktai/koktai.github.io.git
+cd koktai.github.io
+git checkout gh-pages
+rm -rf css/ data/ font/ img/ js/ src/ vendor/
+/bin/cp -fpr ../koktai-polymer/build/default/* ./
+
+# test before commit/push
+polymer serve --port 8888
+
+# commit & push if page looks fine
+git add . && git commit -m "update gh-pages"
+
+git checkout master
+git merge gh-pages
+git push --all
+```
+
+- Then check website https://koktai.github.io/
+
+## Contributors
+
+- [a-tsioh](https://github.com/a-tsioh)
+- [kilfu0701](https://github.com/kilfu0701)
+
+## Lincense
