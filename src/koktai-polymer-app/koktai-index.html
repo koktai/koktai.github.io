@@ -1,0 +1,82 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-layout/app-grid/app-grid-style.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button-animations.html">
+<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="./han-data.html">
+<dom-module id="koktai-index">
+  <template>
+    <style include="app-grid-style">
+     :host {
+       --app-grid-columns: 4;
+    }
+    
+    ul {
+      padding: 0;
+      list-style: none;
+    }
+    a {
+      color: black;
+      text-decoration-line: none;
+    }
+    .syls {
+      --app-grid-columns: 3
+    }
+    
+   
+    </style>
+    <han-data id="api" idx="{{index}}"></han-data>
+  <div id="maindiv" lang="zh-Hant">
+    <paper-listbox class="app-grid">
+      <template is="dom-repeat" items="{{zhuyins}}" restamp="">
+        <paper-menu-button class="item"><h3 slot="dropdown-trigger">[[item.0]]</h3>
+            <paper-listbox class="app-grid syls" slot="dropdown-content">
+              <template is="dom-repeat" items="[[item.1]]" as="syl" restamp="">
+                <paper-item class="item"><a href="/[[syl.1]]">[[syl.0]]</a></paper-item>
+              </template>
+        </paper-listbox></paper-menu-button>
+      </template>
+    
+  </paper-listbox></div>
+  </template>
+  <script>
+      class KoktaiIndex extends Polymer.Element {
+        static get is() { return 'koktai-index' }
+        static get properties() {
+          return {
+            'index': {
+              type: Object,
+              notify: true,
+              value: undefined
+            },
+            'zhuyins': {
+              type: Array,
+              value: [],
+              notify: true
+            }
+          }
+        }
+        static get observers() {
+          return [
+            '_idxUpdated(index)'
+          ]
+        }
+        
+        ready() {
+          super.ready()
+//          Han(this.$.maindiv)
+        }
+        
+        _idxUpdated(newIndex) {
+          if(newIndex === undefined) {return}
+          this.set('zhuyins', newIndex.getAll())
+        }
+
+      }
+      
+      window.customElements.define(KoktaiIndex.is, KoktaiIndex)
+  </script>
+</dom-module>

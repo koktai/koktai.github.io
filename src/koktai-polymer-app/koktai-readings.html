@@ -1,0 +1,56 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="./koktai-text-token.html">
+<link rel="import" href="./koktai-readings.html">
+
+
+<dom-module id="koktai-readings">
+  <template>
+    <style>
+    :host {
+    }
+    paper-card {
+        width: 100%;
+        margin: 10px;
+
+    }
+    .card-header { 
+        @apply --paper-font-headline; 
+       
+
+    }
+    h3 {
+        display: inline;
+    }
+    </style>
+    <div>
+        <template is="dom-repeat" items="{{readings}}" restamp="">
+          <paper-item>
+            <div>
+                <h3>[[item.src]]</h3>
+                <koktai-text-token token="[[item.content]]"></koktai-text-token><br>
+            </div>
+          
+      </paper-item></template>
+    </div>
+  </template>
+  <script>
+      class KoktaiReadings extends Polymer.Element {
+        static get is() { return 'koktai-readings' }
+        static get properties() {
+          return {
+            'readings': {
+              type: Array,
+              notify: true,
+              value: [],
+//              observer: '_sinogramChanged'
+            },
+          }
+        }
+      }
+      
+      window.customElements.define(KoktaiReadings.is, KoktaiReadings)
+  </script>
+</dom-module>

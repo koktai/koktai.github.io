@@ -1,0 +1,40 @@
+@charset "UTF-8";
+.sentence {
+    border-left: 2px solid green;
+    padding: 5px;
+    margin: 5px;
+}
+.lang {
+    display: inline-block;
+    border: #009 1px solid;
+    padding: 3px;
+}
+.text {
+    padding: 3px;
+} 
+ 
+.part-of-speech {
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 5px;
+    float: left;
+}
+.homonym {
+    padding-left: 3px;
+}
+
+@font-face {
+    font-family: 'k';
+    src: url('/font/koktai-k.woff') format('woff');
+}
+
+.k {
+    font-family: 'k';
+}
+
+em {
+    font-family: 'k';
+}
+mark {
+    font-family: 'k';
+}

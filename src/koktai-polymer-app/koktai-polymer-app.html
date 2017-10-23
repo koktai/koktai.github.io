@@ -1,0 +1,191 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<link rel="import" href="./koktai-index.html">
+<link rel="import" href="./koktai-chapter.html">
+<link rel="import" href="./koktai-sinogram.html">
+<link rel="import" href="./han-data.html">
+
+<link rel="stylesheet" media="all" href="/css/han.min.css">
+
+<dom-module id="koktai-polymer-app">
+  <template>        
+    <style>
+      :host {
+        --app-primary-color: #428542;
+        --app-secondary-color: black;
+        display: block;
+      }
+      
+      app-drawer-layout:not([narrow]) [drawer-toggle] {
+        display: none;
+      }
+
+      app-header {
+        color: #ddd;
+        background-color: var(--app-primary-color);
+      }
+
+      paper-icon-button {
+        --paper-icon-button-ink-color: black;
+      }
+
+      .drawer-list {
+        margin: 0 20px;
+      }
+
+      .drawer-list a {
+        display: block;
+        padding: 0 16px;
+        text-decoration: none;
+        color: var(--app-secondary-color);
+        line-height: 40px;
+      }
+
+      .drawer-list a.iron-selected {
+        color: black;
+        font-weight: bold;
+      }
+
+    </style>
+    <han-data id="api" root="/data/">
+	<app-location route="{{route}}"></app-location>
+	<app-route route="{{route}}" pattern="/:id1" data="{{routeData}}" tail="{{subroute}}"></app-route>
+  	<app-route route="{{subroute}}" pattern="/:id2" data="{{subrouteData}}" active="{{id2Active}}"></app-route>
+    
+    <app-drawer-layout fullbleed="">
+        <!--app-drawer id="drawer" slot="drawer">
+            <app-toolbar>Menu</app-toolbar>
+            <iron-selector
+                selected="[[page]]"
+                attr-for-selected="name"
+                class="drawer-list"
+                role="navigation">
+                <a name="introduction" href="/intro">介紹</a>
+                <a name="licence" href="/licence">licence</a>
+                <a name="preface" href="/preface">preface</a>                
+                <a name="index" href="/index">辭典</a>
+            </iron-selector>
+        </app-drawer-->
+        
+        <app-header-layout has-scrolling-region="">
+            <!--app-header slot="header" condenses reveals effects="waterfall">
+                <app-toolbar>
+                    <paper-icon-button icon="menu" title="menu" drawer-toggle></paper-icon-button>
+                </app-toolbar>
+            </app-header-->
+            <div main-title=""><a href="index" style="display:block; padding:15px; margin-top:50px; background-color:#ddd; color:mediumvioletred; text-decoration:none;">吳守禮《國臺對照活用辭典》- 首頁清單</a></div>
+            <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="introduction" role="main" id="pageDiv" lang="zh-Hant" style="margin-top:0px;">
+                
+                <div name="introduction" lang="zh-Hant" class="han-init">
+                  介紹    
+                </div>
+                <div name="licence">legal stuff</div>
+                <div name="preface">preface</div>
+                <koktai-index name="index"></koktai-index>
+                <koktai-chapter id="chapterDiv" name="chapter" chapter="{{chapter}}"></koktai-chapter>
+                <koktai-sinogram id="sinogramDiv" name="sinogram" sinogram="{{sinogram}}"></koktai-sinogram>
+            </iron-pages>
+        </app-header-layout>
+    </app-drawer-layout>
+  </han-data></template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class KoktaiPolymerApp extends Polymer.Element {
+      static get is() { return 'koktai-polymer-app'; }
+      
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'koktai-polymer-app'
+          },
+          page: {
+            type: String,
+            reflectToAttribute: true,
+            observer: '_pageChanged'
+          },
+          sinogram: {
+            type: Object,
+            notify: true,
+          },       
+          chapter: {
+            type: Object,
+            notify: true,
+          },
+          id2Active: Boolean,
+        };
+      }
+      
+      static get observers() {
+        return [
+            '_chapterChanged(routeData.id1)',
+            '_sinogramChanged(subrouteData.id2)',
+        ];
+      }
+      
+      _chapterChanged(id1) {
+        // set default to "index"
+        if (id1 === "")
+          id1 = "index";
+
+        if(id1 === undefined || id1 == "" || id1 == undefined) {return;}
+        if(["intro", "licence", "preface", "index"].includes(id1)) {
+          this.page = id1;
+          return ;
+        }
+        if(this.subrouteData.id2 === undefined || !this.id2Active) {
+            this.$.api.getChapter(
+                id1,
+                ch => {
+                this.set('chapter',ch)
+                this.page = "chapter"
+                })
+               
+        }
+        
+      }
+      
+      _sinogramChanged(id2) {
+        if(id2 === undefined) {return;}
+        this.$.api.getSinogram(
+          this.routeData.id1,
+          id2,
+          s => {
+          console.log(s)
+            this.set('sinogram', s)
+            this.page = "sinogram"
+          })
+      }
+          
+
+      
+      _pageChanged(page) {
+        if(page == undefined) {return;}
+        console.log("requesting "+page)
+     //   if(page == "sinogram") {this.notifyPath('sinogram.*');}
+     //   if(page == "chapter") {this.notifyPath('chapter.*')}
+        this.set("page",page)
+//        Han(this.$.pageDiv).render()
+      }
+      
+    }
+
+    window.customElements.define(KoktaiPolymerApp.is, KoktaiPolymerApp);
+  </script>
+</dom-module>

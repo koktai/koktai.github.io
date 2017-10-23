@@ -1,0 +1,85 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/app-layout/app-grid/app-grid-style.html">
+<link rel="import" href="../../bower_components/paper-styles/color.html">
+<link rel="import" href="./han-data.html">
+<link rel="import" href="./han-ruby.html">
+<link rel="import" href="./koktai-text-token.html">
+<link rel="import" href="./koktai-sinogram.html">
+
+
+<dom-module id="koktai-chapter">
+  <template>  
+    <style>
+    :host {
+      display: block;
+      height: 100vh;
+      display: flex;
+      flex-direction: column; 
+    }
+    iron-list {
+      flex: 1 1 auto;
+    }
+    </style>
+  <div id="maindiv" lang="zh-Hant">
+    <div>[[chapter.zhuyin]]  ([[chapter.pinyin]])</div>
+    <koktai-text-token token="[[chapter.comment]]"></koktai-text-token>
+    <paper-listbox class="app-grid" id="sinoList" on-selected-item-changed="_clickSino">
+        <template is="dom-repeat" items="[[chapter.sinograms]]" as="s" restamp="">
+            <paper-button raised=""><han-ruby annot="[[s.ruby]]" text="[[s.cjk]]"></han-ruby>  </paper-button>
+        </template>
+    </paper-listbox>
+    <paper-listbox items="[[chapter.sinograms]]" as="item" id="entriesList">
+      <template is="dom-repeat" items="{{chapter.sinograms}}" restamp="">
+        <paper-item>
+          <!--
+          <a href="/[[chapter.index]]/[[index]]"><han-ruby text="[[item.cjk]]" annot="[[item.ruby]]"></han-ruby></a> 
+          -->
+          <koktai-sinogram sinogram="{{item}}" id="sino-[[index]]"></koktai-sinogram>
+        </paper-item>
+      </template>
+    </paper-listbox>
+  </div>
+  </template>
+  <script>
+      class KoktaiChapter extends Polymer.Element {
+        static get is() { return 'koktai-chapter' }
+        static get properties() {
+          return {
+            'chapter': {
+              type: Object,
+              notify: true,
+              value: {sinograms: [], pinyin: "", zhuyin:"", comment:undefined},
+              observer: "_update"
+            },
+            id: {
+              type: String
+            }
+          }
+        }
+        
+        _update(newValue, oldValue) {
+          window.chapter = this
+        }
+        
+        _clickSino(e) {
+            var list = this.$.sinoList
+            var idx = list.indexOf(list.selectedItem)
+            console.log(idx)
+            window.e = e
+            this.$.entriesList.items[idx].scrollIntoView()
+
+        }
+        
+        ready() {
+          super.ready()
+          window.chapter = this
+          window.debug = this.$.entriesList
+        }
+      }
+      
+      window.customElements.define(KoktaiChapter.is, KoktaiChapter)
+  </script>
+</dom-module>

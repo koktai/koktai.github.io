@@ -1,0 +1,91 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="./han-data.html">
+<link rel="import" href="./koktai-text-token.html">
+<link rel="import" href="./koktai-readings.html">
+
+
+<dom-module id="koktai-sinogram">
+  <template>
+    <style>
+    :host {
+    }
+    paper-card {
+        width: 100%;
+        margin: 10px;
+
+    }
+    .card-header { 
+        @apply --paper-font-headline; 
+
+    }
+    h3 {
+       display: inline;
+    }
+    h2 {
+        display: inline;
+    }
+    .fanqie {
+        -webkit-align-self: right;
+        text-align: right;
+        float: right;
+    }
+    </style>
+
+    <paper-card id="maindiv" lang="zh-Hant" header="漢字">
+      <div class="card-content>
+        <div class=" card-header"="">
+          <h2>
+          <koktai-text-token token="[[sinogram.cjk]]"></koktai-text-token> 
+          [[sinogram.ruby]]
+          </h2>
+          <koktai-text-token class="fanqie" token="[[sinogram.comment]]"></koktai-text-token>
+          <br>
+        </div>
+
+            <koktai-readings readings="[[sinogram.readings]]" "=""></koktai-readings>
+            <div>
+                <template is="dom-repeat" items="{{sinogram.words}}" restamp="">
+                  <paper-item>
+                    <div>
+                        <h3>【<koktai-text-token token="{{item.title}}"></koktai-text-token>】</h3>
+                        <koktai-text-token token="[[item.definition]]"></koktai-text-token><br>
+                    </div>
+                  
+              </paper-item></template>
+            </div>
+       
+    </paper-card>
+  </template>
+  <script>
+      class KoktaiSinogram extends Polymer.Element {
+        static get is() { return 'koktai-sinogram' }
+        static get properties() {
+          return {
+            'sinogram': {
+              type: Object,
+              notify: true,
+              value: {words:[]},
+              observer: '_sinogramChanged'
+            },
+          }
+        }
+        _sinogramChanged(newValue, oldValue) {
+    //      window.Han(this.$.maindiv).render()    
+        }
+        attributeChangedCallback() {
+  //        window.Han(this.$.maindiv).render()
+        }
+        ready() {
+          super.ready()
+          window.sinogram = this
+//          Han(this.$.maindiv).render()
+        
+        }
+      }
+      
+      window.customElements.define(KoktaiSinogram.is, KoktaiSinogram)
+  </script>
+</dom-module>

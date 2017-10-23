@@ -1,0 +1,39 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<dom-module id="koktai-cjk">
+  <template>
+    <style>
+    :host {
+       display: inline;
+       font-family: 'k';
+       
+     }
+     em.k {
+       font-family: 'k';
+       font-style: normal;
+       border-bottom-width: 2px;
+       -webkit-text-emphasis: filled circle #555;
+       -webkit-text-emphasis-position: under;
+       text-emphasis: filled circle #555;
+       text-emphasis-position: under;
+       border-style: none;
+     }
+    </style>
+    <em lang="zh-Hant" class="k">[[cjk]]</em>
+  </template>
+  <script>
+  class KoktaiCJK extends Polymer.Element {
+      static get is() { return 'koktai-cjk'; }
+      static get properties() {  
+        return {
+          cjk: {
+            type: String,
+            notify: true,
+            value: "?"
+            }
+         }
+      }
+    }
+    window.customElements.define(KoktaiCJK.is, KoktaiCJK);
+  </script>
+
+</dom-module>  
