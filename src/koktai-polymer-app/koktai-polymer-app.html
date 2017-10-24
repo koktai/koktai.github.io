@@ -85,7 +85,7 @@
                     <paper-icon-button icon="menu" title="menu" drawer-toggle></paper-icon-button>
                 </app-toolbar>
             </app-header-->
-            <div main-title=""><a href="index" style="display:block; padding:15px; margin-top:50px; background-color:#ddd; color:mediumvioletred; text-decoration:none;">吳守禮《國臺對照活用辭典》- 首頁清單</a></div>
+            <div main-title=""><a href="index" style="display:block; padding:15px; margin:0; background-color:#ddd; color:mediumvioletred; text-decoration:none;">吳守禮《國臺對照活用辭典》- 首頁清單</a></div>
             <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="introduction" role="main" id="pageDiv" lang="zh-Hant" style="margin-top:0px;">
                 
                 <div name="introduction" lang="zh-Hant" class="han-init">
@@ -140,9 +140,13 @@
       }
       
       _chapterChanged(id1) {
-        // set default to "index"
-        if (id1 === "")
+        if (id1 === "") {
+          return ;
+        } else if (id1 === "dict") {
           id1 = "index";
+        } else if (id1 === "top") {
+          window.location.href = "/";
+        }
 
         if(id1 === undefined || id1 == "" || id1 == undefined) {return;}
         if(["intro", "licence", "preface", "index"].includes(id1)) {

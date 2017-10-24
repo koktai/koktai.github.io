@@ -11,7 +11,7 @@
     <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
     <link rel="stylesheet" media="all" href="/css/style.css">
-    <link rel="import" href="/src/koktai-polymer-app/koktai-polymer-app.html">
+    <!--link rel="import" href="/src/koktai-polymer-app/koktai-polymer-app.html"-->
     <link rel="stylesheet" media="all" href="/css/han.min.css">
 
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -39,7 +39,7 @@
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
             Menu <icon class="fa fa-bars"></icon>
           </button>
-          <a class="navbar-brand page-scroll" href="#page-top">
+          <a class="navbar-brand" href="/top">
             <icon class="fa fa-book"></icon> <span class="light">《國臺對照活用辭典》
           </span></a>
         </div>
@@ -55,7 +55,7 @@
               <a class="page-scroll" href="#about">關於我</a>
             </li>
             <li>
-              <a class="page-scroll" href="#dictionary">辭典</a>
+              <a class="" href="/dict">辭典</a>
             </li>
             <li>
               <a class="page-scroll" href="#contact">聯繫我們</a>
@@ -67,7 +67,11 @@
       <!-- /.container -->
     </nav>
 
-    <header class="intro">
+    <section id="dictionary" class="container content-section text-center hide" style="position:relative; height:98%; margin-top: 90px;">
+      <koktai-polymer-app></koktai-polymer-app>
+    </section>
+
+    <header class="intro hide">
       <div class="intro-body">
         <div class="container">
           <div class="row">
@@ -84,25 +88,25 @@
     </header>
 
     <!-- About Section -->
-    <section id="about" class="container content-section text-center" style="height:100%;">
+    <section id="about" class="container content-section text-center hide" style="height:100%;">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
           <h2>關於 《國臺對照活用辭典》</h2>
           <p>原作者為吳守禮教授</p>
           <p>除原始資料外，此檔案庫內轉換格式、重新編排的編輯著作權（如果有的話）皆以 CC0 釋出，衍生著作物應以原始資料之授權為準。</p>
-          <a href="#dictionary" class="btn btn-circle page-scroll">
+          <a href="#contact" class="btn btn-circle page-scroll">
             <icon class="fa fa-angle-double-down animated"></icon>
           </a>
         </div>
       </div>
     </section>
 
-    <section id="dictionary" class="container content-section text-center" style="display:block; position:relative; height:98%; overflow:auto;">
-      <koktai-polymer-app></koktai-polymer-app>
-    </section>
+    <!--section id="dictionary" class="container content-section text-center" style="display:block; position:relative; height:98%; overflow:auto;">
+      <a href="/dict">Dict</a>
+    </section-->
 
     <!-- Contact Section -->
-    <section id="contact" class="container content-section text-center" style="height:100%;">
+    <section id="contact" class="container content-section text-center hide" style="height:100%;">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
           <h2>聯繫我們</h2>
@@ -134,6 +138,17 @@
       </div>
     </footer>
 
+    <script>
+    $(document).ready(function() {
+      if (location.pathname === "/") {
+        $('.intro, #about, #contact').removeClass('hide');
+      } else {
+        $('<link>').attr("href", "/src/koktai-polymer-app/koktai-polymer-app.html").attr("rel", "import").appendTo('head');
+        $('#dictionary').removeClass('hide');
+        $('.intro, #about, #contact').addClass('hide');
+      }
+    });
+    </script>
   
 
 </body></html>
