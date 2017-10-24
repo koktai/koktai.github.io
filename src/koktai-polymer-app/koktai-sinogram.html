@@ -32,11 +32,15 @@
         text-align: right;
         float: right;
     }
+
+    .word-entry {
+        text-align: left;
+    }
     </style>
 
     <paper-card id="maindiv" lang="zh-Hant" header="漢字">
-      <div class="card-content>
-        <div class=" card-header"="">
+      <div class="card-content">
+        <div class="card-header">
           <h2>
           <koktai-text-token token="[[sinogram.cjk]]"></koktai-text-token> 
           [[sinogram.ruby]]
@@ -45,18 +49,18 @@
           <br>
         </div>
 
-            <koktai-readings readings="[[sinogram.readings]]" "=""></koktai-readings>
+            <koktai-readings readings="[[sinogram.readings]]"></koktai-readings>
             <div>
                 <template is="dom-repeat" items="{{sinogram.words}}" restamp="">
                   <paper-item>
-                    <div>
+                    <div class="word-entry">
                         <h3>【<koktai-text-token token="{{item.title}}"></koktai-text-token>】</h3>
                         <koktai-text-token token="[[item.definition]]"></koktai-text-token><br>
                     </div>
                   
               </paper-item></template>
             </div>
-       
+       </div>
     </paper-card>
   </template>
   <script>

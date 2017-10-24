@@ -1,7 +1,6 @@
-"use strict";
-/* eslint-disable no-invalid-this */
-
 (function (sinonChai) {
+    "use strict";
+
     // Module systems magic dance.
 
     /* istanbul ignore else */
@@ -15,10 +14,11 @@
         });
     } else {
         // Other environment (usually <script> tag): plug in to global chai instance directly.
-        /* global chai: false */
         chai.use(sinonChai);
     }
-}(function (chai, utils) {
+}(function sinonChai(chai, utils) {
+    "use strict";
+
     var slice = Array.prototype.slice;
 
     function isSpy(putativeSpy) {
@@ -28,20 +28,10 @@
     }
 
     function timesInWords(count) {
-        switch (count) {
-            case 1: {
-                return "once";
-            }
-            case 2: {
-                return "twice";
-            }
-            case 3: {
-                return "thrice";
-            }
-            default: {
-                return (count || 0) + " times";
-            }
-        }
+        return count === 1 ? "once" :
+               count === 2 ? "twice" :
+               count === 3 ? "thrice" :
+               (count || 0) + " times";
     }
 
     function isCall(putativeCall) {
@@ -99,14 +89,10 @@
 
             var alwaysSinonMethod = "always" + sinonName[0].toUpperCase() + sinonName.substring(1);
             var shouldBeAlways = utils.flag(this, "always") && typeof this._obj[alwaysSinonMethod] === "function";
-            var sinonMethodName = shouldBeAlways ? alwaysSinonMethod : sinonName;
+            var sinonMethod = shouldBeAlways ? alwaysSinonMethod : sinonName;
 
             var messages = getMessages(this._obj, action, nonNegatedSuffix, shouldBeAlways, slice.call(arguments));
-            this.assert(
-                this._obj[sinonMethodName].apply(this._obj, arguments),
-                messages.affirmative,
-                messages.negative
-            );
+            this.assert(this._obj[sinonMethod].apply(this._obj, arguments), messages.affirmative, messages.negative);
         };
     }
 
@@ -139,9 +125,9 @@
     sinonMethod("calledImmediatelyBefore", "been called immediately before %1");
     sinonMethod("calledImmediatelyAfter", "been called immediately after %1");
     sinonMethod("calledOn", "been called with %1 as this", ", but it was called with %t instead");
-    sinonMethod("calledWith", "been called with arguments %*", "%D");
-    sinonMethod("calledWithExactly", "been called with exact arguments %*", "%D");
-    sinonMethod("calledWithMatch", "been called with arguments matching %*", "%D");
+    sinonMethod("calledWith", "been called with arguments %*", "%C");
+    sinonMethod("calledWithExactly", "been called with exact arguments %*", "%C");
+    sinonMethod("calledWithMatch", "been called with arguments matching %*", "%C");
     sinonMethod("returned", "returned %1");
     exceptionalSinonMethod("thrown", "threw", "thrown %1");
 }));
