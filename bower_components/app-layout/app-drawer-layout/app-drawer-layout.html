@@ -83,7 +83,7 @@ Add the `drawer-toggle` attribute to elements inside `app-drawer-layout` that to
 </app-drawer-layout>
 ```
 
-**NOTE:** With app-layout 2.0, the `drawer-toggle` element needs to be manually hidden
+**NOTE:** With app-layout 2.0, the `drawer-toggle` element will not be automatically hidden
 when app-drawer-layout is not in narrow layout. To add this, add the following CSS rule where
 app-drawer-layout is used:
 
@@ -126,7 +126,8 @@ a shadow root):
 
 @group App Elements
 @element app-drawer-layout
-@demo app-drawer-layout/demo/index.html
+@demo app-drawer-layout/demo/simple-drawer.html Simple Demo
+@demo app-drawer-layout/demo/two-drawers.html Two drawers
 -->
 
 <dom-module id="app-drawer-layout">
@@ -263,7 +264,7 @@ a shadow root):
 
       _updateLayoutStates: function() {
         var drawer = this.drawer;
-        if (!this.isAttached || !drawer) {
+        if (!drawer) {
           return;
         }
 

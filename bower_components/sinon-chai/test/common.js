@@ -1,14 +1,15 @@
 "use strict";
 
-var chai = require("chai");
-var sinonChai = require("../lib/sinon-chai");
-chai.use(sinonChai);
-chai.should();
+global.chai = require("chai");
+global.should = require("chai").should();
+global.expect = require("chai").expect;
+global.AssertionError = require("chai").AssertionError;
 
-exports.swallow = function (thrower) {
+global.swallow = function (thrower) {
     try {
         thrower();
-    } catch (e) {
-      // Intentionally swallow
-    }
+    } catch (e) { }
 };
+
+var sinonChai = require("../lib/sinon-chai");
+chai.use(sinonChai);
