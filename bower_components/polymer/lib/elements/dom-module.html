@@ -41,18 +41,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    *
    * Then in code in some other location that cannot access the dom-module above
    *
-   *     let img = customElements.get('dom-module').import('foo', 'img');
+   *     let img = document.createElement('dom-module').import('foo', 'img');
    *
-   * @customElement
    * @extends HTMLElement
    * @memberof Polymer
    * @summary Custom element that provides a registry of relocatable DOM content
    *   by `id` that is agnostic to bundling.
-   * @unrestricted
    */
   class DomModule extends HTMLElement {
 
-    static get observedAttributes() { return ['id']; }
+    static get observedAttributes() { return ['id'] }
 
     /**
      * Retrieves the element specified by the css `selector` in the module

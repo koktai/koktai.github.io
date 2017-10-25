@@ -21,6 +21,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 </head>
 <body>
+  <!-- Issue: web-component-tester/issues/505 -->
+  <script>void(0)</script>
 
   <test-fixture id="trivialList">
     <template>
@@ -47,78 +49,93 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     });
 
-    test('grid focus change with right arrow', function() {
+    test('grid focus change with right arrow', function(done) {
       container.useTabIndex = true;
       container.data = buildDataSet(100);
 
-      PolymerFlush();
-      var initialItem = getNthItemFromGrid(list, 0);
-      var itemToFocus = getNthItemFromGrid(list, 1);
-      initialItem.focus();
-      PolymerFlush();
-      MockInteractions.pressAndReleaseKeyOn(list, 39); // right
-      PolymerFlush();
-
-      assert.notEqual(itemToFocus.tabIndex, -1);
+      flush(function() {
+        var initialItem = getNthItemFromGrid(list, 0);
+        var itemToFocus = getNthItemFromGrid(list, 1);
+        initialItem.focus();
+        flush(function() {
+          MockInteractions.pressAndReleaseKeyOn(list, 39); // right
+          flush(function() {
+            assert.notEqual(itemToFocus.tabIndex, -1);
+            done();
+          });
+        });
+      });
     });
 
-    test('grid focus change with left arrow', function() {
+    test('grid focus change with left arrow', function(done) {
       container.useTabIndex = true;
       container.data = buildDataSet(100);
 
-      PolymerFlush();
-      var initialItem = getNthItemFromGrid(list, 1);
-      var itemToFocus = getNthItemFromGrid(list, 0);
-      initialItem.focus();
-      PolymerFlush();
-      MockInteractions.pressAndReleaseKeyOn(list, 37); // left
-      PolymerFlush();
-
-      assert.notEqual(itemToFocus.tabIndex, -1);
+      flush(function() {
+        var initialItem = getNthItemFromGrid(list, 1);
+        var itemToFocus = getNthItemFromGrid(list, 0);
+        initialItem.focus();
+        flush(function() {
+          MockInteractions.pressAndReleaseKeyOn(list, 37); // left
+          flush(function() {
+            assert.notEqual(itemToFocus.tabIndex, -1);
+            done();
+          });
+        });
+      });
     });
 
-    test('grid focus change with down arrow', function() {
+    test('grid focus change with down arrow', function(done) {
       container.useTabIndex = true;
       container.data = buildDataSet(100);
 
-      PolymerFlush();
-      var initialItem = getNthItemFromGrid(list, 0);
-      var itemToFocus = getNthItemFromGrid(list, list._itemsPerRow);
-      initialItem.focus();
-      PolymerFlush();
-      MockInteractions.pressAndReleaseKeyOn(list, 40); // down
-      PolymerFlush();
-
-      assert.notEqual(itemToFocus.tabIndex, -1);
+      flush(function() {
+        var initialItem = getNthItemFromGrid(list, 0);
+        var itemToFocus = getNthItemFromGrid(list, list._itemsPerRow);
+        initialItem.focus();
+        flush(function() {
+          MockInteractions.pressAndReleaseKeyOn(list, 40); // down
+          flush(function() {
+            assert.notEqual(itemToFocus.tabIndex, -1);
+            done();
+          });
+        });
+      });
     });
 
-    test('grid focus does not change with down arrow from last row', function() {
+    test('grid focus does not change with down arrow from last row', function(done) {
       container.useTabIndex = true;
       container.data = buildDataSet(5);
 
-      PolymerFlush();
-      var initialItem = getNthItemFromGrid(list, 3);
-      initialItem.focus();
-      PolymerFlush();
-      MockInteractions.pressAndReleaseKeyOn(list, 40); // down
-      PolymerFlush();
-
-      assert.notEqual(initialItem.tabIndex, -1);
+      flush(function() {
+        var initialItem = getNthItemFromGrid(list, 3);
+        initialItem.focus();
+        flush(function() {
+          MockInteractions.pressAndReleaseKeyOn(list, 40); // down
+          flush(function() {
+            assert.notEqual(initialItem.tabIndex, -1);
+            done();
+          });
+        });
+      });
     });
 
-    test('grid focus change with up arrow', function() {
+    test('grid focus change with up arrow', function(done) {
       container.useTabIndex = true;
       container.data = buildDataSet(100);
 
-      PolymerFlush();
-      var initialItem = getNthItemFromGrid(list, list._itemsPerRow);
-      var itemToFocus = getNthItemFromGrid(list, 0);
-      initialItem.focus();
-      PolymerFlush();
-      MockInteractions.pressAndReleaseKeyOn(list, 38); // up
-      PolymerFlush();
-
-      assert.notEqual(itemToFocus.tabIndex, -1);
+      flush(function() {
+        var initialItem = getNthItemFromGrid(list, list._itemsPerRow);
+        var itemToFocus = getNthItemFromGrid(list, 0);
+        initialItem.focus();
+        flush(function() {
+          MockInteractions.pressAndReleaseKeyOn(list, 38); // up
+          flush(function() {
+            assert.notEqual(itemToFocus.tabIndex, -1);
+            done();
+          });
+        });
+      });
     });
 
     test('first visible index', function(done) {
@@ -236,85 +253,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
       });
     });
-
-    test('last visible items should change on resize', function(done) {
-      flush(function() {
-        // Physical scroll bar causes there to be less columns than expected.
-        // Force list to be wide enough to allow for 3 columns and the scroller.
-        list.style.width = '320px';
-        list.items = buildDataSet(64);
-        Polymer.dom.flush();
-        assert.equal(list.lastVisibleIndex, 8, 'The 8th item should be visible.');
-        list.style.height = '400px';
-        requestAnimationFrame(function() {
-          setTimeout(function() {
-            PolymerFlush();
-            list.fire('iron-resize');
-            PolymerFlush();
-            assert.equal(list.lastVisibleIndex, 11, 'The last visible changed as expected.')
-            done();
-          });
-        });
-      });
-    });
-
-    test('first visible items should change on resize when scrolled to the end of the list', function(done) {
-      flush(function() {
-        // Physical scroll bar causes there to be less columns than expected.
-        // Force list to be wide enough to allow for 3 columns and the scroller.
-        list.style.width = '320px';
-        list.items = buildDataSet(64);
-        Polymer.dom.flush();
-        list.scroll(0, 10000000);
-        requestAnimationFrame(function() {
-          setTimeout(function() {
-            PolymerFlush();
-            assert.equal(list.lastVisibleIndex, 64, 'Scroll is maxed out.');
-            assert.equal(list.firstVisibleIndex, 57, 'The first visible index is appropriately set.');
-            list.style.height = '400px';
-            requestAnimationFrame(function() {
-              requestAnimationFrame(function() {
-                setTimeout(function() {
-                  PolymerFlush();
-                  list.fire('iron-resize');
-                  PolymerFlush();
-                  assert.equal(list.lastVisibleIndex, 64, 'Scroll is maxed out.');
-                  assert.equal(list.firstVisibleIndex, 54, 'The first visible item changed as expected.')
-                  done();
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-
-    test('Items display in the correct column after scroll', function(done) {
-      list.style.width = '500px';
-      list.style.height = '500px';
-      list.fire('iron-resize');
-      container.data = buildDataSet(5000);
-      PolymerFlush();
-
-      var setSize = list.items.length;
-      var rowHeight = container.itemSize;
-      var viewportHeight = list.offsetHeight;
-      var scrollToItem = 100;
-
-      function afterScroll() {
-        var firstItem = getNthItemFromGrid(list, 0);
-        assert.equal(firstItem.innerText, '100');
-        done();
-      }
-
-      simulateScroll({
-        list: list,
-        contribution: rowHeight,
-        target: getGridRowFromIndex(list, scrollToItem)*rowHeight,
-        onScrollEnd: afterScroll
-      });
-    });
-
+ 
   });
 </script>
 
