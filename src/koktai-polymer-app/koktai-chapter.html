@@ -67,9 +67,11 @@
         _clickSino(e) {
             var list = this.$.sinoList
             var idx = list.indexOf(list.selectedItem)
-            console.log(idx)
-            window.e = e
-            this.$.entriesList.items[idx].scrollIntoView()
+            if(idx != -1) {
+                console.log(idx)
+                window.e = e
+                this.$.entriesList.items[idx].scrollIntoView()
+            }
 
         }
         
