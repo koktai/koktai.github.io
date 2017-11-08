@@ -1,16 +1,27 @@
 <!DOCTYPE html><html><head>
-    <meta charset="utf-8">
-    <script>WCT = <%= JSON.stringify(clientOptions) %>;</script>
-    <script>window.__generatedByWct = true;</script>
-    <script src="../web-component-tester/browser.js"></script>
-</head>&lt;% extraScripts.forEach(function(script) { %&gt;    <script src="<%- script %>"></script>
-&lt;% }); %&gt;
-    <script src="../web-component-tester/data/a11ySuite.js"></script>
+  <meta charset="utf-8">
+  <script>
+    WCT = <%= JSON.stringify(clientOptions) %>;
+  </script>
+  <script>
+    window.__generatedByWct = true;
+  </script>
+  <script src="../<%= browserScript %>"></script>
+  </head>&lt;% extraScripts.forEach(function(script) { %&gt;
+    <script src="<%- script %>"></script>
+  &lt;% }); %&gt;
+  &lt;% if (typeof npm !== 'undefined' &amp;&amp; npm) { %&gt;
+    <script type="module" src="../<%= a11ySuiteScript %>"></script>
+  &lt;% } else { %&gt;
+    <script src="../<%= a11ySuiteScript %>"></script>
+  &lt;% } %&gt;
 
-  
-    <script>
-      WCT.loadSuites(<%= JSON.stringify(suites) %>);
-    </script>
-  
+
+
+  <script>
+    WCT.loadSuites(<%= JSON.stringify(suites) %>);
+  </script>
+
+
 
 </html>

@@ -12,7 +12,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 (function() {
   'use strict';
 
-  let mutablePropertyChange = Polymer.MutableData._mutablePropertyChange;
+  let mutablePropertyChange;
+  /** @suppress {missingProperties} */
+  (() => {
+    mutablePropertyChange = Polymer.MutableData._mutablePropertyChange;
+  })();
 
   /**
    * Legacy element behavior to skip strict dirty-checking for objects and arrays,
@@ -136,6 +140,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      * @param {*} value New property value
      * @param {*} old Previous property value
      * @return {boolean} Whether the property should be considered a change
+     * @this {this}
      * @protected
      */
     _shouldPropertyChange(property, value, old) {

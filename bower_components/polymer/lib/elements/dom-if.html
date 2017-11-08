@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * data-binding and declarative event features when used in the context of
    * a Polymer element's template.
    *
-   * When `if` becomes falsey, the stamped content is hidden but not
+   * When `if` becomes falsy, the stamped content is hidden but not
    * removed from dom. When `if` subsequently becomes truthy again, the content
    * is simply re-shown. This approach is used due to its favorable performance
    * characteristics: the expense of creating template content is paid only
@@ -31,7 +31,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * Set the `restamp` property to true to force the stamped content to be
    * created / destroyed when the `if` condition changes.
    *
-   * @polymerElement
+   * @customElement
+   * @polymer
    * @extends Polymer.Element
    * @memberof Polymer
    * @summary Custom element that conditionally stamps and hides or removes
@@ -77,7 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           observer: '__debounceRender'
         }
 
-      }
+      };
 
     }
 
@@ -86,6 +87,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this.__renderDebouncer = null;
       this.__invalidProps = null;
       this.__instance = null;
+      this._lastIf = false;
+      this.__ctor = null;
     }
 
     __debounceRender() {
@@ -123,6 +126,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     connectedCallback() {
       super.connectedCallback();
+      this.style.display = 'none';
       if (this.if) {
         this.__debounceRender();
       }
@@ -176,7 +180,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               } else {
                 throw new Error('dom-if requires a <template> child');
               }
-            })
+            });
             observer.observe(this, {childList: true});
             return false;
           }
@@ -184,6 +188,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             // dom-if templatizer instances require `mutable: true`, as
             // `__syncHostProperties` relies on that behavior to sync objects
             mutableData: true,
+            /**
+             * @param {string} prop Property to forward
+             * @param {*} value Value of property
+             * @this {this}
+             */
             forwardHostProp: function(prop, value) {
               if (this.__instance) {
                 if (this.if) {
