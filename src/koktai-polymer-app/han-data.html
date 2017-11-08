@@ -1,0 +1,56 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<script src="./koktai-scala-opt.js"></script>
+
+<dom-module id="han-data">
+
+  <script>
+    class HanData extends Polymer.Element {
+      static get is() {return 'han-data'}
+      static get properties() {
+       return {
+         'idx': {
+           type: Object,
+           notify: true
+         },
+         'root': {
+           type: String,
+           value: "/data/"
+         }
+       }
+      }
+      ready() {
+        super.ready()
+        koktaiAPI.getIndex(
+            this.root + "index.pkl", 
+            idx => this.set('idx',idx)
+            )
+           
+              
+      }
+      
+      getChapter(n, cb) {
+        koktaiAPI.getChapter(this.root + "chpt-"+ n +".pkl", cb)
+      }
+      
+      getSinogram(nc,ns , cb) {
+        koktaiAPI.getSinogram(this.root + "sino-"+ nc + "-"+ ns +".pkl", cb)
+      }
+      
+      
+      getPage(zhuyin) {
+        if( this.idx === undefined) {return}
+        return this.idx.get(zhuyin)
+      }
+      
+      getAll() {
+        console.log("all")
+        if( this.idx === undefined) {return}
+        return this.idx.getAll()
+     }
+    }
+    window.customElements.define(HanData.is, HanData);
+    window.koktai = koktaiAPI
+  </script>
+
+</dom-module>
+
