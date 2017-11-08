@@ -27,12 +27,12 @@
     <div>[[chapter.zhuyin]]  ([[chapter.pinyin]])</div>
     <koktai-text-token token="[[chapter.comment]]"></koktai-text-token>
     <paper-listbox class="app-grid" id="sinoList" on-selected-item-changed="_clickSino">
-        <template is="dom-repeat" items="[[chapter.sinograms]]" as="s" restamp="">
-            <paper-button raised=""><han-ruby annot="[[s.ruby]]" text="[[s.cjk]]"></han-ruby>  </paper-button>
+        <template is="dom-repeat" items="[[chapter.sinograms]]" as="s" restamp>
+            <paper-button  raised><han-ruby annot="[[s.ruby]]" text="[[s.cjk]]"></han-ruby>  </paper-button>
         </template>
     </paper-listbox>
     <paper-listbox items="[[chapter.sinograms]]" as="item" id="entriesList">
-      <template is="dom-repeat" items="{{chapter.sinograms}}" restamp="">
+      <template is="dom-repeat" items="{{chapter.sinograms}}" restamp>
         <paper-item>
           <!--
           <a href="/[[chapter.index]]/[[index]]"><han-ruby text="[[item.cjk]]" annot="[[item.ruby]]"></han-ruby></a> 
