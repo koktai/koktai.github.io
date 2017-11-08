@@ -319,7 +319,7 @@ a shadow root):
        * @return {number} The width of the drawer in pixels.
        */
       getWidth: function() {
-        return this.$.contentContainer.offsetWidth;
+        return this._savedWidth || this.$.contentContainer.offsetWidth;
       },
 
       _isRTL: function() {
@@ -371,11 +371,8 @@ a shadow root):
       _trackStart: function(event) {
         this._drawerState = this._DRAWER_STATE.TRACKING;
 
-        // Disable transitions since style attributes will reflect user track events.
-        this._styleTransitionDuration(0);
-        this.style.visibility = 'visible';
-
         var rect = this.$.contentContainer.getBoundingClientRect();
+        this._savedWidth = rect.width;
         if (this.position === 'left') {
           this._translateOffset = rect.left;
         } else {
@@ -383,6 +380,10 @@ a shadow root):
         }
 
         this._trackDetails = [];
+
+        // Disable transitions since style attributes will reflect user track events.
+        this._styleTransitionDuration(0);
+        this.style.visibility = 'visible';
       },
 
       _trackMove: function(event) {
@@ -545,6 +546,8 @@ a shadow root):
           this._styleTransitionTimingFunction('');
           this.style.visibility = '';
         }
+
+        this._savedWidth = null;
 
         if (this.opened) {
           this._drawerState = this.persistent ?
