@@ -15,18 +15,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   /**
    * @namespace Polymer
    * @summary Polymer is a lightweight library built on top of the web
-   *   standards-based Web Components API's, and makes it easy to build your
-   *   own custom HTML elements.
-   * @param {!PolymerInit} info Prototype for the custom element. It must contain
-   *   an `is` property to specify the element name. Other properties populate
-   *   the element prototype. The `properties`, `observers`, `hostAttributes`,
-   *   and `listeners` properties are processed to create element features.
-   * @return {!Object} Returns a custom element class for the given provided
-   *   prototype `info` object. The name of the element if given by `info.is`.
+   * standards-based Web Components API's, and makes it easy to build your
+   * own custom HTML elements.
+   * @param {Object} info Prototype for the custom element. It must contain
+   * an `is` property to specify the element name. Other properties populate
+   * the element prototype. The `properties`, `observers`, `hostAttributes`,
+   * and `listeners` properties are processed to create element features.
+   * @return {Object} Returns a custom element class for the given provided
+   * prototype `info` object. The name of the element if given by `info.is`.
    */
   window.Polymer = function(info) {
     return window.Polymer._polymerFn(info);
-  };
+  }
 
   // support user settings on the Polymer object
   if (userPolymer) {
@@ -34,21 +34,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   }
 
   // To be plugged by legacy implementation if loaded
-  /* eslint-disable valid-jsdoc */
   /**
-   * @param {!PolymerInit} info Prototype for the custom element. It must contain
-   *   an `is` property to specify the element name. Other properties populate
-   *   the element prototype. The `properties`, `observers`, `hostAttributes`,
-   *   and `listeners` properties are processed to create element features.
-   * @return {!Object} Returns a custom element class for the given provided
-   *   prototype `info` object. The name of the element if given by `info.is`.
+   * @param {Object} info Prototype for the custom element. It must contain
+   * an `is` property to specify the element name. Other properties populate
+   * the element prototype. The `properties`, `observers`, `hostAttributes`,
+   * and `listeners` properties are processed to create element features.
    */
   window.Polymer._polymerFn = function(info) { // eslint-disable-line no-unused-vars
     throw new Error('Load polymer.html to use the Polymer() function.');
-  };
-  /* eslint-enable */
-
-  window.Polymer.version = '2.1.1';
+  }
+  window.Polymer.version = '2.0.1';
 
   /* eslint-disable no-unused-vars */
   /*
@@ -57,7 +52,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   */
   window.JSCompiler_renameProperty = function(prop, obj) {
     return prop;
-  };
+  }
   /* eslint-enable */
 
 })();

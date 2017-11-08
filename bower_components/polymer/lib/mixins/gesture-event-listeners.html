@@ -7,7 +7,6 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 --><link rel="import" href="../utils/boot.html">
-<link rel="import" href="../utils/mixin.html">
 <link rel="import" href="../utils/gestures.html">
 
 <script>
@@ -15,9 +14,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   'use strict';
 
-  /**
-   * @const {Polymer.Gestures}
-   */
   const gestures = Polymer.Gestures;
 
   /**
@@ -29,8 +25,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * templates will support gesture events when this mixin is applied along with
    * `Polymer.TemplateStamp`.
    *
-   * @mixinFunction
-   * @polymer
+   * @polymerMixin
    * @memberof Polymer
    * @summary Element class mixin that provides API for adding Polymer's cross-platform
    * gesture events to nodes
@@ -38,8 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   Polymer.GestureEventListeners = Polymer.dedupingMixin(superClass => {
 
     /**
-     * @polymer
-     * @mixinClass
+     * @polymerMixinClass
      * @implements {Polymer_GestureEventListeners}
      */
     class GestureEventListeners extends superClass {

@@ -16,7 +16,6 @@
 (function () {
 'use strict';
 
-window.__wctUseNpm = false;
 /**
  * @param {function()} callback A function to call when the active web component
  *     frameworks have loaded.
@@ -465,29 +464,20 @@ var _config = {
    *
    * Paths are relative to `scriptPrefix`.
    */
-  environmentScripts: !!window.__wctUseNpm ?
-    [
-      'stacky/browser.js',
-      'async/lib/async.js',
-      'lodash/index.js',
-      'mocha/mocha.js',
-      'chai/chai.js',
-      '@polymer/sinonjs/sinon.js',
-      'sinon-chai/lib/sinon-chai.js',
-      'accessibility-developer-tools/dist/js/axs_testing.js',
-      '@polymer/test-fixture/test-fixture.js'
-    ] : [
-      'stacky/browser.js',
-      'async/lib/async.js',
-      'lodash/lodash.js',
-      'mocha/mocha.js',
-      'chai/chai.js',
-      'sinonjs/sinon.js',
-      'sinon-chai/lib/sinon-chai.js',
-      'accessibility-developer-tools/dist/js/axs_testing.js'
-    ],
+  environmentScripts: [
+    'stacky/browser.js',
+    'async/lib/async.js',
+    'lodash/lodash.js',
+    'mocha/mocha.js',
+    'chai/chai.js',
+    'sinonjs/sinon.js',
+    'sinon-chai/lib/sinon-chai.js',
+    'accessibility-developer-tools/dist/js/axs_testing.js'
+  ],
 
-  environmentImports: !!window.__wctUseNpm ? [] : ['test-fixture/test-fixture.html'],
+  environmentImports: [
+    'test-fixture/test-fixture.html'
+  ],
 
   /** Absolute root for client scripts. Detected in `setup()` if not set. */
   root: null,
@@ -1297,19 +1287,14 @@ function _injectPrototype(klass, prototype) {
  */
 function loadSync() {
   debug('Loading environment scripts:');
-  var a11ySuite = !!window.__wctUseNpm ?
-    'wct-browser-legacy/a11ySuite.js' : 'web-component-tester/data/a11ySuite.js';
+  var a11ySuite = 'web-component-tester/data/a11ySuite.js';
   var scripts = get('environmentScripts');
   var a11ySuiteWillBeLoaded = window.__generatedByWct || scripts.indexOf(a11ySuite) > -1;
-
-  // We can't inject a11ySuite when running the npm version because it is a
-  // module-based script that needs `<script type=module>` and compilation 
-  // for browsers without module support.
-  if (!a11ySuiteWillBeLoaded && !window.__wctUseNpm) {
+  if (!a11ySuiteWillBeLoaded) {
     // wct is running as a bower dependency, load a11ySuite from data/
     scripts.push(a11ySuite);
   }
-  scripts.forEach(function (path) {
+  scripts.forEach(function(path) {
     var url = expandUrl(path, get('root'));
     debug('Loading environment script:', url);
     // Synchronous load.
@@ -1318,7 +1303,7 @@ function loadSync() {
   debug('Environment scripts loaded');
 
   var imports = get('environmentImports');
-  imports.forEach(function (path) {
+  imports.forEach(function(path) {
     var url = expandUrl(path, get('root'));
     debug('Loading environment import:', url);
     // Synchronous load.
