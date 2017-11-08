@@ -10,16 +10,16 @@
        display: inline;
      }
     </style>
-    <template is="dom-if" if="{{isSimpleString}}" restamp="">
+    <template is="dom-if" if="{{isSimpleString}}" restamp>
       [[token.s]]
     </template>
-    <template is="dom-if" if="{{isCJKRuby}}" restamp="">
+    <template is="dom-if" if="{{isCJKRuby}}" restamp>
       <han-ruby text="[[token.text]]" annot="[[token.ruby]]"></han-ruby>
     </template>
-    <template is="dom-if" if="{{isKoktaiCJK}}" restamp="">
+    <template is="dom-if" if="{{isKoktaiCJK}}" restamp>
       <koktai-cjk cjk="[[token.cjk]]"></koktai-cjk>
     </template>
-    <template is="dom-if" if="{{isText}}" restamp="">
+    <template is="dom-if" if="{{isText}}" restamp>
       <koktai-text content="[[token.content]]"></koktai-text>
     </template>
   </template>

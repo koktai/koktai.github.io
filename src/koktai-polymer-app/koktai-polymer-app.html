@@ -17,7 +17,7 @@
 <link rel="import" href="./koktai-sinogram.html">
 <link rel="import" href="./han-data.html">
 
-<link rel="stylesheet" media="all" href="/css/han.min.css">
+<link rel="stylesheet" media="all" href="/css/han.min.css" />
 
 <dom-module id="koktai-polymer-app">
   <template>        
@@ -59,12 +59,20 @@
       }
 
     </style>
-    <han-data id="api" root="/data/">
-	<app-location route="{{route}}"></app-location>
-	<app-route route="{{route}}" pattern="/:id1" data="{{routeData}}" tail="{{subroute}}"></app-route>
-  	<app-route route="{{subroute}}" pattern="/:id2" data="{{subrouteData}}" active="{{id2Active}}"></app-route>
+    <han-data id="api" root="/data/" />
+	<app-location route="{{route}}" use-hash-as-path></app-location>
+	<app-route 
+		route="{{route}}"
+		pattern="/:id1"
+        data="{{routeData}}"
+        tail="{{subroute}}"></app-route>
+  	<app-route 
+		route="{{subroute}}"
+		pattern="/:id2"
+        data="{{subrouteData}}"
+        active="{{id2Active}}"></app-route>
     
-    <app-drawer-layout fullbleed="">
+    <app-drawer-layout fullbleed>
         <!--app-drawer id="drawer" slot="drawer">
             <app-toolbar>Menu</app-toolbar>
             <iron-selector
@@ -85,8 +93,15 @@
                     <paper-icon-button icon="menu" title="menu" drawer-toggle></paper-icon-button>
                 </app-toolbar>
             </app-header-->
-            <div main-title=""><a href="index" style="display:block; padding:15px; margin:0; background-color:#ddd; color:mediumvioletred; text-decoration:none;">吳守禮《國臺對照活用辭典》- 首頁清單</a></div>
-            <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="introduction" role="main" id="pageDiv" lang="zh-Hant" style="margin-top:0px;">
+            <div main-title><a href="/#/dict" style="display:block; padding:15px; margin:0; background-color:#ddd; color:mediumvioletred; text-decoration:none;">吳守禮《國臺對照活用辭典》- 首頁清單</a></div>
+            <iron-pages
+                selected="[[page]]"
+                attr-for-selected="name"
+                fallback-selection="introduction"
+                role="main"
+                id="pageDiv"
+                lang="zh-Hant"
+                style="margin-top:0px;">
                 
                 <div name="introduction" lang="zh-Hant" class="han-init">
                   介紹    
@@ -95,11 +110,11 @@
                 <div name="preface">preface</div>
                 <koktai-index name="index"></koktai-index>
                 <koktai-chapter id="chapterDiv" name="chapter" chapter="{{chapter}}"></koktai-chapter>
-                <koktai-sinogram id="sinogramDiv" name="sinogram" sinogram="{{sinogram}}"></koktai-sinogram>
+                <koktai-sinogram id="sinogramDiv" name="sinogram" sinogram="{{sinogram}}" /></koktai-sinogram>
             </iron-pages>
         </app-header-layout>
     </app-drawer-layout>
-  </han-data></template>
+  </template>
 
   <script>
     /**
@@ -140,19 +155,13 @@
       }
       
       _chapterChanged(id1) {
-        if (id1 === "" || id1 === "dict") {
+        console.log("chapt changed: " + id1)
+        if (id1 === "") {
+          return ;
+        } else if (id1 === "dict") {
           id1 = "index";
         } else if (id1 === "top") {
           window.location.href = "/";
-        }
-
-        var hash_arr = location.hash.split('#!/');
-        if (hash_arr.length === 2 && (hash_arr[1] !== "dict")) {
-          if (hash_arr[1] === "top") {
-            window.location.href = "/";
-          }
-
-          id1 = hash_arr[1];
         }
 
         if(id1 === undefined || id1 == "" || id1 == undefined) {return;}
@@ -173,6 +182,7 @@
       }
       
       _sinogramChanged(id2) {
+        console.log("sino changed: " + id2)
         if(id2 === undefined) {return;}
         this.$.api.getSinogram(
           this.routeData.id1,
@@ -187,9 +197,7 @@
 
       
       _pageChanged(page) {
-        if (page == undefined || location.pathname === "/") {
-            return;
-        }
+        if(page == undefined) {return;}
         console.log("requesting "+page)
      //   if(page == "sinogram") {this.notifyPath('sinogram.*');}
      //   if(page == "chapter") {this.notifyPath('chapter.*')}

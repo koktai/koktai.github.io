@@ -15,6 +15,7 @@
     paper-card {
         width: 100%;
         margin: 10px;
+        color: black;
 
     }
     .card-header { 
@@ -46,19 +47,19 @@
           [[sinogram.ruby]]
           </h2>
           <koktai-text-token class="fanqie" token="[[sinogram.comment]]"></koktai-text-token>
-          <br>
+          <br/>
         </div>
 
             <koktai-readings readings="[[sinogram.readings]]"></koktai-readings>
             <div>
-                <template is="dom-repeat" items="{{sinogram.words}}" restamp="">
+                <template is="dom-repeat" items="{{sinogram.words}}" restamp>
                   <paper-item>
                     <div class="word-entry">
                         <h3>【<koktai-text-token token="{{item.title}}"></koktai-text-token>】</h3>
-                        <koktai-text-token token="[[item.definition]]"></koktai-text-token><br>
+                        <koktai-text-token token="[[item.definition]]"></koktai-text-token><br/>
                     </div>
-                  
-              </paper-item></template>
+                  </paper-card>
+              </template>
             </div>
        </div>
     </paper-card>

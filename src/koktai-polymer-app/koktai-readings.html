@@ -26,14 +26,14 @@
     }
     </style>
     <div>
-        <template is="dom-repeat" items="{{readings}}" restamp="">
+        <template is="dom-repeat" items="{{readings}}" restamp>
           <paper-item>
             <div>
                 <h3>[[item.src]]</h3>
-                <koktai-text-token token="[[item.content]]"></koktai-text-token><br>
+                <koktai-text-token token="[[item.content]]"></koktai-text-token><br/>
             </div>
-          
-      </paper-item></template>
+          </paper-card>
+      </template>
     </div>
   </template>
   <script>

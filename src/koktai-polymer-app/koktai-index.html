@@ -31,16 +31,16 @@
     <han-data id="api" idx="{{index}}"></han-data>
   <div id="maindiv" lang="zh-Hant">
     <paper-listbox class="app-grid">
-      <template is="dom-repeat" items="{{zhuyins}}" restamp="">
+      <template is="dom-repeat" items="{{zhuyins}}" restamp>
         <paper-menu-button class="item"><h3 slot="dropdown-trigger">[[item.0]]</h3>
             <paper-listbox class="app-grid syls" slot="dropdown-content">
-              <template is="dom-repeat" items="[[item.1]]" as="syl" restamp="">
-                <paper-item class="item"><a href="/[[syl.1]]">[[syl.0]]</a></paper-item>
+              <template is="dom-repeat" items="[[item.1]]" as="syl" restamp>
+                <paper-item class="item"><a href="/#/[[syl.1]]">[[syl.0]]</a></paper-item>
               </template>
-        </paper-listbox></paper-menu-button>
+        </paper-menu-button>
       </template>
-    
-  </paper-listbox></div>
+    </ul>
+  </div>
   </template>
   <script>
       class KoktaiIndex extends Polymer.Element {
